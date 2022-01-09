@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PortfolioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,7 @@ Route::get('/dashboard', function () {
     return view('layouts.backend.index');
 })->name('dashboard');
 
+Route::resource('portfolios',PortfolioController::class);
     });
 
 

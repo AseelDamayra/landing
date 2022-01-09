@@ -10,15 +10,20 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>
       </li>
-      <ul>
-    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+      <div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+  {{ LaravelLocalization::getCurrentLocaleName() }}
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
         <li>
-            <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
-                {{ $properties['native'] }}
+            <a style="display:block" rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                {{$localeCode }}
             </a>
         </li>
     @endforeach
-</ul>
+  </div>
+</div>
     </ul>
 
     <!-- Right navbar links -->
