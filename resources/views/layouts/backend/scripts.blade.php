@@ -34,4 +34,4 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{asset('backend/assets/js/pages/dashboard.js')}}"></script>
 
-@yild('script')
+@yield('script')

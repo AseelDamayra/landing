@@ -19,6 +19,25 @@ class PortfolioController extends Controller
         return view('layouts.backend.portfolio.index',compact('portfolios'));
     }
 
+
+    public function getData(){
+        $portfolio=portfolio::all();
+        return response()->json([
+        'portfolios'=>$portfolio,
+        ]);
+
+    }
+
+    public function editData(Request $request){
+        $portfolio=portfolio::findOrFail($request->id);
+        return response()->json([
+        'name_en'=>$portfolio->getTranslation('name','en'),
+        'name_ar'=>$portfolio->getTranslation('name','ar'),
+        'description'=>$portfolio->description,
+
+        ]);
+
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -37,17 +56,45 @@ class PortfolioController extends Controller
      */
     public function store(Request $request)
     {
-        try{
-              portfolio::create([
+        //الطريقة الاولى 
+    //     try{
+    //           portfolio::create([
           
-            'name'=>['en'=>$request->name_en , 'ar'=>$request->name],
-            'description'=>$request->description,
+    //         'name'=>['en'=>$request->name_en , 'ar'=>$request->name],
+    //         'description'=>$request->description,
 
-        ]);
-        }
-      catch(Exception $e){
-        return redirect()->back()->withError(['error'=>$e->getMessage()]);
-      }
+    //     ]);
+
+    //     session()->flash('add',trans('backend/message.success'));
+    //     return redirect('portfolios');
+    //     }
+    //   catch(Exception $e){
+    //     return redirect()->back()->withError(['error'=>$e->getMessage()]);
+    //   }
+
+
+    // الطريقة الثانية باستخدام ajax 
+      // return $request;
+      try{
+                  portfolio::create([
+              
+                'name'=>['en'=>$request->name_en , 'ar'=>$request->name],
+                'description'=>$request->description,
+    
+            ]);
+    
+            session()->flash('add',trans('backend/message.success'));
+          return response()->json([
+              'done'=>'done'
+          ]); // لارسال البيانات ل ajax
+            }
+          catch(Exception $e){
+            return response()->json([
+                'done'=>'error',
+                'error'=>$e->getMessage(),
+            ]);
+          }
+
     }
 
     /**

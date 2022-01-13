@@ -26,7 +26,11 @@ Route::get('/dashboard', function () {
     return view('layouts.backend.index');
 })->name('dashboard');
 
+Route::get('editportfolios',[PortfolioController::class,'editData'])->name('portfolios.get_edit');//لازم قبل resourse الخاصة يها
+Route::get('getportfolios',[PortfolioController::class,'getData'])->name('portfolios.get');//لازم قبل resourse الخاصة يها
 Route::resource('portfolios',PortfolioController::class);
+
+
     });
 
 
