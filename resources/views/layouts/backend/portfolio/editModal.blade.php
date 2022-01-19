@@ -65,10 +65,11 @@
              
 
               <!-- الطريقة الثانية باستخدام ajax -->
-              <form id="addForm">
+              <form id="updateForm">
                   @csrf
                   <div class="loading"></div>
                 <div class="card-body">
+                <input id="port_id" type="hidden" class="form-control"  name="port_id">
                   <div class="form-group">
                     <label for="exampleInputEmail1">{{trans('backend/portfolio.name_EN')}}</label>
                     <input id="name_en" type="text" class="form-control"  name="name_en">
@@ -87,7 +88,7 @@
 
                <div class="modal-footer">
                 <button type="button" id="close" class="btn btn-secondary" data-dismiss="modal">{{trans('backend/public.Close')}}</button>
-                <button type="submit" id="add_portfolio" class="btn btn-primary">{{trans('backend/public.Save changes')}}</button>
+                <button type="submit" id="update_portfolio" class="btn btn-primary">{{trans('backend/public.Save changes')}}</button>
                </div>
               </form>
             </div>

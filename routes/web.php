@@ -27,7 +27,9 @@ Route::get('/dashboard', function () {
 })->name('dashboard');
 
 Route::get('editportfolios',[PortfolioController::class,'editData'])->name('portfolios.get_edit');//لازم قبل resourse الخاصة يها
-Route::get('getportfolios',[PortfolioController::class,'getData'])->name('portfolios.get');//لازم قبل resourse الخاصة يها
+Route::get('getportfolios',[PortfolioController::class,'getData'])->name('portfolios.get');
+Route::post('updateportfolio',[PortfolioController::class,'update'])->name('portfolios.myupdate');
+Route::post('deleteportfolio',[PortfolioController::class,'destroy'])->name('portfolio.delete');
 Route::resource('portfolios',PortfolioController::class);
 
 

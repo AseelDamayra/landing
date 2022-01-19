@@ -34,7 +34,7 @@ class PortfolioController extends Controller
         'name_en'=>$portfolio->getTranslation('name','en'),
         'name_ar'=>$portfolio->getTranslation('name','ar'),
         'description'=>$portfolio->description,
-
+        'port_id'=>$portfolio->id,
         ]);
 
     }
@@ -126,10 +126,34 @@ class PortfolioController extends Controller
      * @param  \App\Models\portfolio  $portfolio
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, portfolio $portfolio)
+    public function update(Request $request)
     {
-        //
-    }
+
+        
+       try{
+        $portfolio=portfolio::findOrFail($request->port_id);
+
+        $portfolio->update([
+        'name'=>['en'=>$request->name_en , 'ar'=>$request->name],
+        'description'=>$request->description,
+        'port_id'=>$request->port_id,
+        ]);
+
+
+       session()->flash('add',trans('backend/message.success'));
+       return response()->json([
+         'done'=>'done'
+            ]); // لارسال البيانات ل ajax
+     } 
+        catch(Exception $e){
+          return response()->json([
+          'done'=>'error',
+          'error'=>$e->getMessage(),
+         ]);
+       }
+
+     }
+    
 
     /**
      * Remove the specified resource from storage.
@@ -137,8 +161,25 @@ class PortfolioController extends Controller
      * @param  \App\Models\portfolio  $portfolio
      * @return \Illuminate\Http\Response
      */
-    public function destroy(portfolio $portfolio)
+    public function destroy(Request $request)
     {
-        //
+        try{
+            $portfolio=portfolio::findOrFail($request->id);
+    
+            $portfolio->delete();
+
+           session()->flash('add',trans('backend/message.success'));
+           return response()->json([
+             'done'=>'done',
+             'id'=>$portfolio->id,
+                ]); // لارسال البيانات ل ajax
+         } 
+            catch(Exception $e){
+              return response()->json([
+              'done'=>'error',
+              'error'=>$e->getMessage(),
+             ]);
+           }
+    
     }
 }

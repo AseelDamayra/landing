@@ -139,7 +139,7 @@ getData();
                    //each بدل من foreach or forelse
                    $.each(data.portfolios,function(key,item){
                       tbody.append(
-                        `<tr>
+                        `<tr class="rowPort${item.id}">
                         <td>${key+1}</td>
                         <td>${item.name.{{App::getlocale()}}}</td>
                         <td>${item.description}</td>
@@ -147,7 +147,7 @@ getData();
                         <button port-id="${item.id}" class="bg-info border-0 editPortfolio" data-toggle="modal" data-target="">
                          <i class="fas fa-edit"></i>
                         </button>
-                        <button class="bg-danger border-0">
+                        <button port-id="${item.id}" class="bg-danger border-0 deletePortfolio">
                         <i class="far fa-trash-alt"></i>
                         </button>
                         </td>
@@ -213,11 +213,48 @@ getData();
                   $("#name_ar").val(responce.name_ar);
                   $("#name_en").val(responce.name_en);
                   $("#description").val(responce.description);
-
+                  $("#port_id").val(responce.port_id);
+                  
                  }
            });
-        })
+        });
 
+        $(document).on('click','#update_portfolio',function(e){
+              e.preventDefault();
+           let form=$('#updateForm')[0];
+           let formData=new FormData(form);
+
+           $.ajax({
+             type:'post',
+             url:'{{route('portfolios.myupdate')}}',
+             data:formData,
+             contentType:false,
+            processData:false,
+            success:function(){
+                getData();
+                $('#editPortfolio').modal('hide');
+            }
+           });
+
+        });
+
+       $(document).on('click','.deletePortfolio',function(){
+        let id= $(this).attr('port-id'); // من item.id
+        
+        $.ajax({
+           type:'post',
+           url:'{{route('portfolio.delete')}}',
+           data:
+              {
+              'id':id,
+              '_token':"{{csrf_token()}}",//في اللاضافة والتعديل كان يجيب التوكين من formdata
+              },
+            success:function(res){
+                $(`.rowPort${res.id}`).remove();
+               // getData();
+            }
+        });
+       });
 </script>
 
 @endsection
